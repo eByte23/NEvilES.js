@@ -1,5 +1,5 @@
 # NEvilES.js
-An Event Sourcing library for javascript base on the principles and data models used in https://github.com/eByte23/NEvilES
+An Event Sourcing library for javascript base on the principles and data models used in https://github.com/CRGCode/NEvilES
 
 ## Get Started
 
