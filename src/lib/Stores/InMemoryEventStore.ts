@@ -1,30 +1,45 @@
-import { EventData } from "../Aggregate";
-import { IAggregate, IAggregateCommit, IRepository } from "../IRepository";
+import { Event, EventData } from '../Event';
+import {
+  IAggregate,
+  // IAggregateCommit, IRepository
+} from '../IRepository';
 
+export class InMemoryEventStore {
+  //implements IRepository{
+  private _events: Array<EventData> = [];
 
+  Get<TAggregate extends IAggregate>(
+    id: string,
+    aggregate: TAggregate
+  ): TAggregate {
+    aggregate.setState(id);
 
+    const aggregateEvents = this._events.filter((x) => x.Event.StreamId === id);
 
-export class InMemoryEventStore implements IRepository{
-    private _events: Array<EventData> = [];
+    aggregateEvents.forEach((val) => {
+      aggregate.applyEvent(val.Event as any as Event<string>);
+    });
 
+    return aggregate;
+  }
+  // Get(type: string, id: string): IAggregate{
+  //     throw new Error("Method not implemented.");
+  // }
+  GetStateless(type: string, id: string): IAggregate {
+    console.log(type);
+    console.log(id);
+    throw new Error('Method not implemented.');
+  }
+  Save<TAggregate extends IAggregate>(aggregate: TAggregate): void {
+    //IAggregateCommit {
+    console.log(aggregate);
+    throw new Error('Method not implemented.');
+  }
 
-    Get<TAggregate extends IAggregate>(id: string): TAggregate{
-        
-
-        throw new Error("Method not implemented.");
-    }
-    // Get(type: string, id: string): IAggregate{
-    //     throw new Error("Method not implemented.");
-    // }
-    GetStateless(type: string, id: string): IAggregate {
-        throw new Error("Method not implemented.");
-    }
-    Save<TAggregate extends IAggregate>(aggregate: TAggregate): IAggregateCommit {
-        throw new Error("Method not implemented.");
-    }
-
+  SaveEvents(events: EventData[]) {
+    this._events = events;
+  }
 }
-
 
 // public TAggregate Get<TAggregate>(Guid id) where TAggregate : IAggregate
 
